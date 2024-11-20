@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
+import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-quill/dist/quill.snow.css";
@@ -11,6 +12,7 @@ const AddBlog = () => {
     content: "",
     image: null,
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -48,16 +50,45 @@ const AddBlog = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validateForm()) {
-      toast.success("Blog added successfully!");
-      setFormData({
-        title: "",
-        postBy: "",
-        content: "",
-        image: null,
-      });
+      setLoading(true); // Show loading indicator
+      const { title, postBy, content, image } = formData;
+
+      const data = new FormData();
+      data.append("title", title);
+      data.append("postBy", postBy);
+      data.append("content", content);
+      data.append("image", image);
+
+      try {
+        const response = await axios.post(
+          "https://blog-api-one-mocha.vercel.app/api/blogs/",
+          data,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (response.status === 201) {
+          toast.success("Blog created successfully!");
+          setFormData({
+            title: "",
+            postBy: "",
+            content: "",
+            image: null,
+          });
+        }
+      } catch (error) {
+        console.error("Error creating blog:", error);
+        toast.error("Failed to create blog. Please try again.");
+      } finally {
+        setLoading(false); // Hide loading indicator
+      }
     }
   };
 
@@ -109,9 +140,12 @@ const AddBlog = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full px-4 py-2 text-white bg-highlight rounded-lg shadow-neumorphismLight hover:shadow-innerLight dark:shadow-neumorphismDark dark:hover:shadow-innerDark"
+              disabled={loading}
+              className={`w-full px-4 py-2 text-white rounded-lg shadow-neumorphismLight hover:shadow-innerLight dark:shadow-neumorphismDark dark:hover:shadow-innerDark ${
+                loading ? "bg-gray-400 cursor-not-allowed" : "bg-highlight"
+              }`}
             >
-              Add Blog
+              {loading ? "Adding Blog..." : "Add Blog"}
             </button>
           </div>
 
