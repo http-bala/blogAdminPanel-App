@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Custom styles for ReactQuill */
+.custom-quill .ql-container {
+    border: none !important; /* Remove the border */
+  }
+  
+  .custom-quill .ql-editor {
+    padding: 12px !important; /* Adjust padding if necessary */
+  }
+  
