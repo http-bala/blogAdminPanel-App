@@ -1,36 +1,85 @@
 import React from "react";
-import {  Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import AddBlog from "./pages/AddBlog";
 import ViewBlogList from "./pages/ViewBlogList";
 import AddUser from "./pages/AddUser";
 import UserList from "./pages/UserList";
 import Settings from "./pages/Settings";
-import Login from "./pages/Login"; // Import Login page
-import PrivateRoute from "./auth/ProtectedRoute" 
+import Login from "./pages/Login";
+import ProtectedRoute from "./auth/ProtectedRoute";
+import ProtectedLayout from "./pages/ProtectedLayout ";
+
 const App = () => {
   return (
-      <Routes>
-        {/* Login page route */}
-        <Route path="/" element={<Login />} />
+    <Routes>
+      {/* Public route for login */}
+      <Route path="/" element={<Login />} />
 
-        {/* Protect all routes with PrivateRoute */}
-        <Route element={<PrivateRoute />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="add" element={<AddBlog />} />
-          <Route path="viewBlogs" element={<ViewBlogList />} />
-          <Route path="adduser" element={<AddUser />} />
-          <Route path="viewuser" element={<UserList />} />
-          <Route path="setting" element={<Settings />} />
-        </Route>
+      {/* Protected routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+              <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/add"
+        element={
+          <ProtectedRoute>
+            <ProtectedLayout>
+              <AddBlog />
+            </ProtectedLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/viewBlogs"
+        element={
+          <ProtectedRoute>
+            <ProtectedLayout>
+              <ViewBlogList />
+            </ProtectedLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/adduser"
+        element={
+          <ProtectedRoute>
+            <ProtectedLayout>
+              <AddUser />
+            </ProtectedLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/viewuser"
+        element={
+          <ProtectedRoute>
+            <ProtectedLayout>
+              <UserList />
+            </ProtectedLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/setting"
+        element={
+          <ProtectedRoute>
+            <ProtectedLayout>
+              <Settings />
+            </ProtectedLayout>
+          </ProtectedRoute>
+        }
+      />
 
-        {/* Optional: 404 route for non-existing paths */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      {/* Redirect for non-existing paths */}
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 };
-
-// PrivateRoute Component for protecting routes
-
 
 export default App;
