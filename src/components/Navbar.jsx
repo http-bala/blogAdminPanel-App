@@ -1,7 +1,17 @@
 import React from "react";
 import { FaSun, FaMoon } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";  // This hook helps with navigation
 
 const Navbar = ({ toggleTheme, isDarkMode }) => {
+  const navigate = useNavigate();  // Create the navigation function
+
+  // This function handles the logout process
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove token from localStorage
+    navigate("/login"); // Redirect to login page
+  };
+  
+
   return (
     <nav className="flex items-center justify-between bg-lightBg dark:bg-darkBg p-4 rounded-lg shadow-neumorphismLight dark:shadow-neumorphismDark">
       {/* Search Bar */}
@@ -24,7 +34,10 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
         </button>
 
         {/* Logout Button */}
-        <button className="px-4 py-2 bg-highlight text-white rounded-lg shadow-neumorphismLight hover:shadow-innerLight dark:shadow-neumorphismDark dark:hover:shadow-innerDark">
+        <button
+          onClick={handleLogout}  // When clicked, the handleLogout function will run
+          className="px-4 py-2 bg-highlight text-white rounded-lg shadow-neumorphismLight hover:shadow-innerLight dark:shadow-neumorphismDark dark:hover:shadow-innerDark"
+        >
           Logout
         </button>
       </div>

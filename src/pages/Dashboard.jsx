@@ -17,12 +17,12 @@ const Dashboard = () => {
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-1 p-6 rounded-lg shadow-neumorphismLight dark:shadow-neumorphismDark">
+      <div className="flex-1 p-6 rounded-lg shadow-neumorphismLight dark:shadow-neumorphismDark ">
         {/* Navbar */}
         <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
 
         {/* Routed Content */}
-        <div className="mt-6">
+        <div className="mt-6 ">
           <Outlet />
         </div>
       </div>

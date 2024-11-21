@@ -45,6 +45,20 @@ const ViewBlogList = () => {
     }
   };
 
+  const MAX_WORDS = 5;
+
+  const getPreview = (text) => {
+    const words = text.split(' ');
+    return words.length > MAX_WORDS
+      ? words.slice(0, MAX_WORDS).join(' ') + ' ...'
+      : text;
+  };
+
+  const formatDate = (isoDate) => {
+    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    return new Date(isoDate).toLocaleDateString('en-US', options);
+  };
+
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
@@ -100,12 +114,12 @@ const ViewBlogList = () => {
                     <img
                       src={blog.image || "https://via.placeholder.com/50"}
                       alt={blog.title}
-                      className="w-12 h-12 object-cover rounded-full"
+                      className="w-12 h-12 object-cover \"
                     />
                   </td>
-                  <td className="px-4 py-2 border border-gray-300 dark:text-gray-300">{blog.title}</td>
+                  <td className="px-4 py-2 border border-gray-300 dark:text-gray-300">{getPreview(blog.title)}</td>
                   <td className="px-4 py-2 border border-gray-300 dark:text-gray-300">{blog.postBy}</td>
-                  <td className="px-4 py-2 border border-gray-300 dark:text-gray-300">{blog.date}</td>
+                  <td className="px-4 py-2 border border-gray-300 dark:text-gray-300">{formatDate(blog.date)}</td>
                   <td className="px-4 py-2 border border-gray-300">
                     <Link
                       to={`/edit-blog/${blog._id}`}
